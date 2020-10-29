@@ -44,6 +44,21 @@ async function onMessageHandler(target, context, msg, self) {
     client.say(target, `TODAY'S RAFFLE WINNER IS @${random}`);
 
   }
+  else if (msg === "!entries" && context.username === "jeffblankenburg") {
+    const raffleEntries = await data.getEntriesForToday();
+    let uniqueEntries = [];
+    let entriesString = "";
+    for (let i = 0;i<raffleEntries.length;i++) {
+      if (!uniqueEntries.includes(`@${raffleEntries[i].fields.Username}`)) {
+        if (!["janblank", "oxygenbox", "mrdemonwolf"].includes(raffleEntries[i].fields.Username)) {
+          uniqueEntries.push(`@${raffleEntries[i].fields.Username}`);
+        }
+        //entriesString += `@${raffleEntries[i].fields.Username}`;
+        //if (i < uniqueEntries.length-1) entriesString += ", ";
+      }
+    }
+    client.say(target, `TODAY'S ${uniqueEntries.length} RAFFLE ENTRIES ARE ${uniqueEntries.join(", ")}`);
+  }
   else {
     var base = new Airtable({apiKey: keys.airtable_api_key}).base(keys.airtable_base_data);
 
